@@ -1,0 +1,31 @@
+{
+  "name": "your-bot-name",
+  "version": "6.2.1",
+  "description": "Bot Template",
+  "main": "dist/index.js",
+  "repository": "",
+  "author": "First Last <email@example.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@typegoose/typegoose": "^9.4.0",
+    "@types/beautify": "^0.0.0",
+    "beautify": "^0.0.8",
+    "cron": "^1.8.2",
+    "discord.js": "^13.4.0",
+    "dotenv": "^10.0.0",
+    "mongoose": "^6.1.3"
+  },
+  "scripts": {
+    "start": "node dist/index",
+    "dev": "yarn clean; yarn compile; NODE_ENV=development yarn start",
+    "prod": "yarn clean; yarn compile; NODE_ENV=production yarn start",
+    "dev:win": "yarn clean:win && yarn compile && yarn start",
+    "clean": "rm -rf dist",
+    "clean:win": "del /Q /S dist",
+    "compile": "tsc"
+  },
+  "packageManager": "yarn@3.1.1",
+  "devDependencies": {
+    "typescript": "^4.5.4"
+  }
+}
