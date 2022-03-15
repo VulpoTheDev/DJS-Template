@@ -1,5 +1,7 @@
 import {
 	ApplicationCommandOptionChoice,
+	ApplicationCommandOptionType,
+	ApplicationCommandType,
 	CommandOptionDataTypeResolvable,
 	PermissionFlags,
 } from "discord.js";
@@ -11,7 +13,7 @@ export interface ICommandOptions {
 	group?: string;
 	name: string;
 	ownerOnly?: boolean;
-	type: "CHAT_INPUT" | "USER" | "MESSAGE";
+	type: ApplicationCommandType;
 	runIn?: "both" | "dms" | "servers";
 	shortDescription?: string;
 	usage?: string;

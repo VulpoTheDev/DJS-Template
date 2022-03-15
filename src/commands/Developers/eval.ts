@@ -1,5 +1,10 @@
 import beautify from "beautify";
-import { CommandInteraction, MessageEmbed } from "discord.js";
+import {
+	ApplicationCommandOptionType,
+	ApplicationCommandType,
+	ChatInputCommandInteraction,
+	EmbedBuilder,
+} from "discord.js";
 import VulpoClient from "../../lib/VulpoClient";
 import BaseSlashCommand from "../../structures/BaseCommand";
 
@@ -12,18 +17,18 @@ export default class EvalCommand extends BaseSlashCommand {
 				{
 					name: "code",
 					description: "NodeJS Code you'd want to evaluate",
-					type: "STRING",
+					type: ApplicationCommandOptionType.String,
 					required: true,
 				},
 			],
 			cooldown: 0,
 			userPermissions: [],
-			type: "CHAT_INPUT",
+			type: ApplicationCommandType.ChatInput,
 			botPermissions: [],
 			ownerOnly: true,
 		});
 	}
-	async run(interaction: CommandInteraction) {
+	async run(interaction: ChatInputCommandInteraction) {
 		const script = interaction.options.getString("code", true);
 		if (script?.includes("token"))
 			return interaction.reply("Request Denied!");
@@ -45,35 +50,38 @@ export default class EvalCommand extends BaseSlashCommand {
 			}
 
 			// Process the output
-			const embed = new MessageEmbed()
+			const embed = new EmbedBuilder()
 				.setAuthor({
 					name: interaction.user.tag,
-					iconURL: interaction.user.displayAvatarURL({
-						dynamic: true,
-					}),
+					iconURL: interaction.user.displayAvatarURL(),
 				})
 				.setTitle("Evaluated Code")
 				.setColor("#ff1493"!)
 				.setTimestamp()
-				.addField(
-					":inbox_tray: Input: ",
-					`\`\`\`ts\n${beautify(script, { format: "js" })} \`\`\``
+				.addFields(
+					{
+					
+					name: ":inbox_tray: Input: ",
+					value: `\`\`\`ts\n${beautify(script, { format: "js" })} \`\`\``
+				
+					},
+					{
+						name: ":outbox_tray: Output",
+						value: `\`\`\`ts\n${beautify(res, { format: "js" })}\`\`\``,
+					}
 				)
-				.addField(":outbox_tray: Output", `\`\`\`ts\n${res}\`\`\``)
-				.setFooter({ text: `User ID: ${interaction.user.id}`})
-				.setThumbnail(
-					this.client!.user?.displayAvatarURL({ dynamic: true })!
-				);
+				.setFooter({ text: `User ID: ${interaction.user.id}` })
+				.setThumbnail(this.client!.user?.displayAvatarURL()!);
 
 			if (evaluated && evaluated.then) {
-				embed.addField(
-					":outbox_tray: Promise Output",
-					`\`\`\`js\n${promisedResult}\`\`\``
-				);
+				embed.addFields({
+					name: ":outbox_tray: Promise Output",
+					value: `\`\`\`js\n${promisedResult}\`\`\``
+				});
 			}
 
 			// Add a type of what is the type of what's evaluated
-			embed.addField("Type of: ", `\`\`\`${typeof evaluated}\`\`\``);
+			embed.addFields({name: "Type of: ", value: `\`\`\`${typeof evaluated}\`\`\``});
 
 			// Sends the embed
 			await interaction.reply({ embeds: [embed], ephemeral: true });

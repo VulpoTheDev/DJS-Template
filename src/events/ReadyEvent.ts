@@ -1,4 +1,4 @@
-import { GuildApplicationCommandPermissionData } from "discord.js";
+import { ActivityFlags, ActivityType, ApplicationCommandPermissionType, GuildApplicationCommandPermissionData } from "discord.js";
 import VulpoClient from "../lib/VulpoClient";
 import BaseEvent from "../structures/BaseEvent";
 
@@ -16,7 +16,7 @@ export default class ReadyEvent extends BaseEvent {
 		}
 		client.user?.setActivity({
 			name: "Moderation Tunes",
-			type: "LISTENING",
+			type: ActivityType.Listening,
 		});
 		console.info("Loading (/) Permission and Setting up");
 
@@ -50,7 +50,7 @@ export default class ReadyEvent extends BaseEvent {
 								{
 									id: client.config.ownerID,
 									permission: true,
-									type: "USER",
+									type: ApplicationCommandPermissionType.User,
 								},
 							],
 						});
@@ -65,7 +65,7 @@ export default class ReadyEvent extends BaseEvent {
 								{
 									id: role.id,
 									permission: true,
-									type: "ROLE",
+									type: ApplicationCommandPermissionType.Role,
 								},
 							],
 						};

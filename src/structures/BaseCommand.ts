@@ -1,5 +1,7 @@
 import {
+	ApplicationCommandOptionType,
 	ApplicationCommandPermissions,
+	ApplicationCommandType,
 	Interaction,
 	PermissionFlags,
 } from "discord.js";
@@ -12,7 +14,7 @@ export default abstract class BaseCommand {
 	public cooldown?: number;
 	public extendedDescription?: string;
 	public group?: string;
-	public type: "CHAT_INPUT" | "USER" | "MESSAGE";
+	public type: ApplicationCommandType	;
 	public name: string;
 	public description: string;
 	public ownerOnly?: boolean;

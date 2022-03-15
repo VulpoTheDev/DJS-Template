@@ -1,10 +1,19 @@
+import { Partials } from "discord.js";
 import * as dotenv from "dotenv";
 import VulpoClient from "./lib/VulpoClient";
 dotenv.config();
 
 const client = new VulpoClient({
 	intents: 32767,
-	partials: ["CHANNEL", "GUILD_MEMBER", "MESSAGE", "USER"],
+	partials: [
+		Partials.Channel,
+		Partials.GuildMember,
+		Partials.GuildScheduledEvent,
+		Partials.Message,
+		Partials.Reaction,
+		Partials.ThreadMember,
+		Partials.User,
+	],
 });
 
 client.loadCommands();

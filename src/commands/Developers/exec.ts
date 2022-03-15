@@ -1,5 +1,5 @@
 import { exec } from "child_process";
-import { CommandInteraction, MessageEmbed } from "discord.js";
+import { ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
 import VulpoClient from "../../lib/VulpoClient";
 import BaseSlashCommand from "../../structures/BaseCommand";
 
@@ -13,18 +13,18 @@ export default class ExecCommand extends BaseSlashCommand {
 					name: "command",
 					description:
 						"Command you would want the execute command to run",
-					type: "STRING",
+					type: ApplicationCommandOptionType.String,
 					required: true,
 				},
 			],
 			cooldown: 0,
 			userPermissions: [],
 			botPermissions: [],
-			type: "CHAT_INPUT",
+			type: ApplicationCommandType.ChatInput,
 			ownerOnly: true,
 		});
 	}
-	async run(interaction: CommandInteraction) {
+	async run(interaction: ChatInputCommandInteraction) {
 		// Checking 3 times in a row because just in case
 		if (interaction.user.id !== "852070153804972043")
 			return interaction.reply(
@@ -53,24 +53,18 @@ export default class ExecCommand extends BaseSlashCommand {
 		exec(`${script}`, async (error, stdout) => {
 			const response = error || stdout;
 			try {
-				const embed = new MessageEmbed()
+				const embed = new EmbedBuilder()
 					.setAuthor({
 						name: interaction.user.tag,
-						iconURL: interaction.user.displayAvatarURL({
-							dynamic: true,
-						}),
+						iconURL: interaction.user.displayAvatarURL(),
 					})
 					.setTitle("Execute")
 					.setDescription(
 						`**Ran: \`\`\`${script}\`\`\`**\n\`\`\`js\n${response.toString()} \n\`\`\``
 					)
-					.setThumbnail(
-						this.client!.user?.displayAvatarURL({
-							dynamic: true,
-						})!
-					)
+					.setThumbnail(this.client!.user?.displayAvatarURL()!)
 					.setTimestamp()
-					.setFooter({ text: `User ID: ${interaction.user.id}`})
+					.setFooter({ text: `User ID: ${interaction.user.id}` })
 					.setColor("#ff1493"!);
 				// Sends the embed with the response embed in it... Get it?
 				await interaction.reply({ embeds: [embed] });

@@ -1,4 +1,4 @@
-import { Interaction, MessageEmbed } from "discord.js";
+import { Interaction, EmbedBuilder, Colors } from "discord.js";
 import VulpoClient from "../lib/VulpoClient";
 import BaseCommand from "../structures/BaseCommand";
 import BaseEvent from "../structures/BaseEvent";
@@ -10,7 +10,10 @@ export default class InteractionCreateEvent extends BaseEvent {
 		});
 	}
 	async run(client: VulpoClient, interaction: Interaction) {
-		if (interaction.isCommand() || interaction.isContextMenu()) {
+		if (
+			interaction.isChatInputCommand() ||
+			interaction.isContextMenuCommand()
+		) {
 			if (!interaction.guild)
 				interaction.reply({
 					content:
@@ -72,17 +75,17 @@ export default class InteractionCreateEvent extends BaseEvent {
 						? `${e.message}\n${e.stack}`
 						: (e as string)
 				);
-				const embed = new MessageEmbed()
+				const embed = new EmbedBuilder()
 					.setAuthor({
 						name: interaction.user.tag,
-						iconURL: interaction.user.displayAvatarURL({ dynamic: true })
+						iconURL: interaction.user.displayAvatarURL(),
 					})
-					.setColor("RED")
+					.setColor(Colors.Red)
 					.setDescription(`${e}`)
 					.setFooter({
 						text: `If this isn't a fixable problem on your side please dm ${
 							client.users.cache.get(client.config.ownerID)!.tag
-						}`
+						}`,
 					});
 				return interaction.reply({ embeds: [embed] });
 			}
