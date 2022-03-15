@@ -54,12 +54,12 @@ export default class ExecCommand extends BaseSlashCommand {
 			const response = error || stdout;
 			try {
 				const embed = new MessageEmbed()
-					.setAuthor(
-						`${interaction.user.tag}`,
-						`${interaction.user.displayAvatarURL({
+					.setAuthor({
+						name: interaction.user.tag,
+						iconURL: interaction.user.displayAvatarURL({
 							dynamic: true,
-						})}`
-					)
+						}),
+					})
 					.setTitle("Execute")
 					.setDescription(
 						`**Ran: \`\`\`${script}\`\`\`**\n\`\`\`js\n${response.toString()} \n\`\`\``
@@ -70,7 +70,7 @@ export default class ExecCommand extends BaseSlashCommand {
 						})!
 					)
 					.setTimestamp()
-					.setFooter(`User ID: ${interaction.user.id}`)
+					.setFooter({ text: `User ID: ${interaction.user.id}`})
 					.setColor("#ff1493"!);
 				// Sends the embed with the response embed in it... Get it?
 				await interaction.reply({ embeds: [embed] });

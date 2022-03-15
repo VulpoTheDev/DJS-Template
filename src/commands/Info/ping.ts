@@ -18,10 +18,10 @@ export default class PingCommand extends BaseCommand {
 	async run(interaction: CommandInteraction) {
 		const reply = await interaction.channel!.send("Pinging");
 		const embed = new MessageEmbed()
-			.setAuthor(
-				interaction.user.tag,
-				interaction.user.displayAvatarURL({ dynamic: true })
-			)
+			.setAuthor({
+				name: interaction.user.tag,
+				iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
+			})
 			.setColor(this.client.config.color as ColorResolvable)
 			.addField(
 				"Message Latency",
@@ -30,11 +30,11 @@ export default class PingCommand extends BaseCommand {
 				)}ms`
 			)
 			.addField("API Latency", `${this.client.ws.ping}ms`)
-			.setFooter(
-				`If there's an Issue please report them to ${
+			.setFooter({
+				text: `If there's an Issue please report them to ${
 					this.client.users.cache.get(this.client.config.ownerID)?.tag
 				}`
-			);
+			});
 		reply.delete();
 		interaction.reply({ embeds: [embed] });
 	}

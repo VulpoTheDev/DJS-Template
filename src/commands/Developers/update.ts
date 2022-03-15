@@ -18,15 +18,15 @@ export default class UpdateCommand extends BaseSlashCommand {
 	}
 	async run(interaction: CommandInteraction) {
 		const embed = new MessageEmbed()
-			.setAuthor(
-				`${interaction.user.tag}`,
-				`${interaction.user.displayAvatarURL({ dynamic: true })}`
-			)
+			.setAuthor({
+				name: interaction.user.tag,
+				iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
+			})
 			.setTitle("📥  Update - Updating bot...")
 			.setColor(this.client.config.color as ColorResolvable)
 			.setDescription("⏲️ This may take a bit...")
 			.setTimestamp()
-			.setFooter(`User ID: ${interaction.user.id}`);
+			.setFooter({ text: `User ID: ${interaction.user.id}`});
 		await interaction.reply({ embeds: [embed] });
 		try {
 			const gitStash = execSync("git stash").toString();

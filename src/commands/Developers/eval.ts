@@ -46,10 +46,12 @@ export default class EvalCommand extends BaseSlashCommand {
 
 			// Process the output
 			const embed = new MessageEmbed()
-				.setAuthor(
-					`${interaction.user.tag}`,
-					`${interaction.user.displayAvatarURL({ dynamic: true })}`
-				)
+				.setAuthor({
+					name: interaction.user.tag,
+					iconURL: interaction.user.displayAvatarURL({
+						dynamic: true,
+					}),
+				})
 				.setTitle("Evaluated Code")
 				.setColor("#ff1493"!)
 				.setTimestamp()
@@ -58,7 +60,7 @@ export default class EvalCommand extends BaseSlashCommand {
 					`\`\`\`ts\n${beautify(script, { format: "js" })} \`\`\``
 				)
 				.addField(":outbox_tray: Output", `\`\`\`ts\n${res}\`\`\``)
-				.setFooter(`User ID: ${interaction.user.id}`)
+				.setFooter({ text: `User ID: ${interaction.user.id}`})
 				.setThumbnail(
 					this.client!.user?.displayAvatarURL({ dynamic: true })!
 				);

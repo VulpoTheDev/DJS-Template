@@ -73,17 +73,17 @@ export default class InteractionCreateEvent extends BaseEvent {
 						: (e as string)
 				);
 				const embed = new MessageEmbed()
-					.setAuthor(
-						interaction.user.tag,
-						interaction.user.displayAvatarURL({ dynamic: true })
-					)
+					.setAuthor({
+						name: interaction.user.tag,
+						iconURL: interaction.user.displayAvatarURL({ dynamic: true })
+					})
 					.setColor("RED")
 					.setDescription(`${e}`)
-					.setFooter(
-						`If this isn't a fixable problem on your side please dm ${
+					.setFooter({
+						text: `If this isn't a fixable problem on your side please dm ${
 							client.users.cache.get(client.config.ownerID)!.tag
 						}`
-					);
+					});
 				return interaction.reply({ embeds: [embed] });
 			}
 		}
